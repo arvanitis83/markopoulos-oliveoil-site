@@ -166,6 +166,51 @@ def background(root, spec):
             f'style="object-position:{esc(pos)}" {load}></picture></div>')
 
 
+def gallery(lang, root):
+    """{{gallery}}: animated slideshow of site.json > gallery, with thumbnails and a full-screen view."""
+    items = S.get("gallery", [])
+    if not items:
+        return ""
+    L = {"el": ("Φωτογραφίες της γραμμής επεξεργασίας", "Προηγούμενη φωτογραφία", "Επόμενη φωτογραφία",
+                "Προβολή σε πλήρη οθόνη", "Φωτογραφία", "Κλείσιμο", "Παύση", "Αναπαραγωγή"),
+         "en": ("Photos of the processing line", "Previous photo", "Next photo",
+                "View full screen", "Photo", "Close", "Pause", "Play")}[lang]
+    n = len(items)
+    slides, thumbs = [], []
+    for i, it in enumerate(items):
+        name, cap = it["img"], it[lang]
+        big = IMG_DIR / f"{name}-1400.jpg"
+        if not big.exists():
+            raise SystemExit(f"Gallery image not found: {name} (run tools/make_images.py)")
+        w, h = jpeg_size(big)
+        w8, _ = jpeg_size(IMG_DIR / f"{name}-800.jpg")
+        base = f"{root}assets/img/{name}"
+        full = f"{base}-1800.jpg" if (IMG_DIR / f"{name}-1800.jpg").exists() else f"{base}-1400.jpg"
+        active = " is-active" if i == 0 else ""
+        load = "" if i == 0 else ' loading="lazy"'
+        slides.append(
+            f'<figure class="g-slide{active}" data-full="{full}" aria-roledescription="slide" aria-label="{i + 1} / {n}">'
+            f'<img class="g-blur" src="{base}-800.jpg" alt="" aria-hidden="true"{load}>'
+            f'<picture><source type="image/webp" srcset="{base}-800.webp {w8}w, {base}-1400.webp {w}w" sizes="(min-width: 75rem) 70rem, 100vw">'
+            f'<img class="g-img" src="{base}-1400.jpg" srcset="{base}-800.jpg {w8}w, {base}-1400.jpg {w}w" sizes="(min-width: 75rem) 70rem, 100vw" width="{w}" height="{h}" alt="{esc(cap)}"{load}></picture>'
+            f'<figcaption><span class="g-count">{i + 1:02d} / {n:02d}</span><span class="g-cap">{esc(cap)}</span></figcaption></figure>')
+        thumbs.append(
+            f'<button class="g-thumb{active}" type="button" data-go="{i}" aria-label="{L[4]} {i + 1}: {esc(cap)}"'
+            f'{" aria-current=" + chr(34) + "true" + chr(34) if i == 0 else ""}><img src="{base}-800.jpg" alt="" loading="lazy"></button>')
+    arrow = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    zoom = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
+    pause = '<svg class="i-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="i-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>'
+    return (f'<div class="gallery" data-gallery data-l-close="{L[5]}" data-l-prev="{L[1]}" data-l-next="{L[2]}" '
+            f'data-l-pause="{L[6]}" data-l-play="{L[7]}" aria-roledescription="carousel" aria-label="{L[0]}">'
+            f'<div class="g-stage">{"".join(slides)}'
+            f'<button class="g-btn g-prev" type="button" aria-label="{L[1]}">{arrow}</button>'
+            f'<button class="g-btn g-next" type="button" aria-label="{L[2]}">{arrow}</button>'
+            f'<div class="g-tools"><button class="g-btn g-play" type="button" aria-label="{L[6]}">{pause}</button>'
+            f'<button class="g-btn g-zoom" type="button" aria-label="{L[3]}">{zoom}</button></div>'
+            f'<div class="g-progress" aria-hidden="true"><span></span></div></div>'
+            f'<div class="g-thumbs">{"".join(thumbs)}</div></div>')
+
+
 def maps_url():
     return "https://www.google.com/maps/search/?api=1&query=" + quote(S["maps_query"])
 
@@ -299,11 +344,12 @@ def fill(text, lang, root):
         "icon_phone": ICON["phone"],
         "leaves": LEAVES,
         "ornament": ORNAMENT,
+        "gallery": gallery(lang, root),
         "maps_embed": "https://maps.google.com/maps?q=" + quote(S["maps_query"]) + "&t=m&z=14&ie=UTF8&output=embed",
         "email_block": (f'<section><h2>Email</h2><p><a href="mailto:{esc(S["email"])}">{esc(S["email"])}</a></p></section>'
                         if S.get("email") else ""),
     }
-    raw = {"ornament", "leaves", "root", "maps_url", "maps_embed", "tel", "contact_list", "hours_list", "messaging_buttons",
+    raw = {"gallery", "ornament", "leaves", "root", "maps_url", "maps_embed", "tel", "contact_list", "hours_list", "messaging_buttons",
            "icon_phone", "email_block"}
     text = re.sub(r"\{\{img:([^}]+)\}\}", lambda m: picture(root, m.group(1)), text)
     text = re.sub(r"\{\{bg:([^}]+)\}\}", lambda m: background(root, m.group(1)), text)
@@ -318,6 +364,7 @@ def fill(text, lang, root):
     return re.sub(r"\{\{([\w-]+)\}\}", var, text)
 
 
+FLAGS = {'el': '<svg class="flag" viewBox="0 0 27 18" width="21" height="14" aria-hidden="true"><rect width="27" height="18" fill="#0d5eaf"/><path d="M0 3h27M0 9h27M0 15h27" stroke="#fff" stroke-width="2"/><rect width="10" height="10" fill="#0d5eaf"/><path d="M5 0v10M0 5h10" stroke="#fff" stroke-width="2"/></svg>', 'en': '<svg class="flag" viewBox="0 0 60 30" width="21" height="14" aria-hidden="true"><clipPath id="ukc"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#ukc)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></svg>'}
 ORNAMENT = '<svg class="ornament" aria-hidden="true" viewBox="0 0 120 40" width="120" height="40" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M4 30 C30 26 60 22 96 12"/><path d="M22 27 C24 18 32 14 40 13 C36 20 30 25 22 27Z"/><path d="M30 26 C38 30 46 31 54 28 C46 24 38 23 30 26Z"/><path d="M50 21 C52 12 60 7 68 7 C64 14 58 19 50 21Z"/><path d="M58 20 C66 25 74 25 82 21 C74 17 66 17 58 20Z"/><path d="M80 14 C84 7 92 4 99 5 C95 11 88 14 80 14Z"/><ellipse cx="104" cy="16" rx="5.5" ry="4" transform="rotate(-25 104 16)" fill="currentColor" fill-opacity=".25"/></svg>'
 LEAVES = '<div class="leaves" aria-hidden="true"><span class="leaf" style="--x:8%;--d:0s;--t:19s;--s:1"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:22%;--d:6s;--t:23s;--s:0.7"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:37%;--d:3s;--t:17s;--s:0.9"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:55%;--d:9s;--t:21s;--s:0.6"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:68%;--d:1.5s;--t:25s;--s:1.1"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:83%;--d:5s;--t:18s;--s:0.8"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:93%;--d:11s;--t:22s;--s:0.7"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span></div>'
 
@@ -468,7 +515,7 @@ def layout(key, lang, meta, body, root, is404=False):
     <nav id="site-nav" class="site-nav" aria-label="{t['main_nav']}">
       <ul>{''.join(items)}</ul>
       <div class="nav-extra">
-        <a class="lang-switch" href="{other_href}" hreflang="{t['other_lang_code']}" lang="{t['other_lang_code']}">{t['other_lang']}</a>
+        <a class="lang-switch" href="{other_href}" hreflang="{t['other_lang_code']}" lang="{t['other_lang_code']}">{FLAGS[t['other_lang_code']]}<span>{t['other_lang']}</span></a>
         <a class="btn btn-call" href="tel:{S['phone']}">{ICON['phone']}<span>{phone_label}</span></a>
       </div>
     </nav>
@@ -500,7 +547,7 @@ def layout(key, lang, meta, body, root, is404=False):
   <div class="wrap"><div class="f-legal">
     <span>© {TODAY.year} {esc(S['legal'].get('company_name') or S['name'][lang])}</span>
     {legal_line(lang)}
-    <a href="{other_href}" hreflang="{t['other_lang_code']}" lang="{t['other_lang_code']}">{t['other_lang']}</a>
+    <a class="lang-switch" href="{other_href}" hreflang="{t['other_lang_code']}" lang="{t['other_lang_code']}">{FLAGS[t['other_lang_code']].replace('ukc', 'ukc2')}<span>{t['other_lang']}</span></a>
   </div></div>
 </footer>
 <div class="callbar" role="region" aria-label="{t['call']}">

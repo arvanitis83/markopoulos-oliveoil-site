@@ -1,71 +1,129 @@
 {
   "_help": "Business details used on every page. Edit here, run `python build.py`, then upload the public/ folder. Empty \"\" values are simply not shown on the site.",
-
   "domain": "https://www.markopoulos-oliveoil.gr",
   "founded": 1963,
-
   "name": {
     "el": "Ελαιοτριβείο Μαρκόπουλος",
     "en": "Markopoulos Olive Mill"
   },
-
   "phone": "+302233051298",
   "phone_display": "22330 51298",
   "phone_display_intl": "+30 22330 51298",
-
   "_help_mobile": "Optional mobile number in +30... form. If filled, Viber and WhatsApp buttons appear on the contact page.",
   "mobile": "",
-
   "_help_email": "The address must exist (create it in Hostinger hPanel > Emails). Website form messages are delivered here.",
   "email": "info@markopoulos-oliveoil.gr",
   "form_sender": "noreply@markopoulos-oliveoil.gr",
-
   "address": {
     "street": "",
-    "town": { "el": "Μαλεσίνα", "en": "Malesina" },
-    "region": { "el": "Φθιώτιδα", "en": "Fthiotida" },
+    "town": {
+      "el": "Μαλεσίνα",
+      "en": "Malesina"
+    },
+    "region": {
+      "el": "Φθιώτιδα",
+      "en": "Fthiotida"
+    },
     "postcode": "350 01",
     "country": "GR"
   },
   "maps_query": "Ελαιοτριβείο Μαρκόπουλος Μαλεσίνα",
   "_help_geo": "Optional exact coordinates of the mill, e.g. 38.6170 and 23.2330 (right-click the mill in Google Maps to copy them).",
-  "geo": { "lat": "", "lng": "" },
-
+  "geo": {
+    "lat": "",
+    "lng": ""
+  },
   "season": {
     "_help": "Shown in the top bar of every page. Set show to false to hide it.",
     "show": true,
     "open": true,
-    "label": { "el": "Σεζόν 2026–27", "en": "2026–27 season" },
+    "label": {
+      "el": "Σεζόν 2026–27",
+      "en": "2026–27 season"
+    },
     "text": {
       "el": "Το ελαιοτριβείο λειτουργεί. Κλείστε σειρά τηλεφωνικά.",
       "en": "The mill is running. Call to book your slot."
     }
   },
-
   "hours": {
-    "months": { "el": "Οκτώβριος – Ιανουάριος", "en": "October – January" },
-    "days": { "el": "Καθημερινά", "en": "Every day" },
+    "months": {
+      "el": "Οκτώβριος – Ιανουάριος",
+      "en": "October – January"
+    },
+    "days": {
+      "el": "Καθημερινά",
+      "en": "Every day"
+    },
     "time": "07:00 – 20:00",
     "_help_offseason": "What happens February – September, e.g. \"Κατόπιν τηλεφωνικής συνεννόησης\". Leave empty to hide.",
-    "offseason": { "el": "", "en": "" },
-    "schema": { "opens": "07:00", "closes": "20:00", "valid_from": "10-01", "valid_through": "01-31" }
+    "offseason": {
+      "el": "",
+      "en": ""
+    },
+    "schema": {
+      "opens": "07:00",
+      "closes": "20:00",
+      "valid_from": "10-01",
+      "valid_through": "01-31"
+    }
   },
-
   "social": {
     "_help": "Full profile addresses, e.g. https://www.facebook.com/yourpage. Empty = icon not shown.",
     "facebook": "",
     "instagram": ""
   },
-
   "legal": {
     "_help": "Business identification shown in the footer and privacy policy (ask your accountant).",
     "company_name": "",
     "vat": "",
     "gemi": ""
   },
-
   "features": {
     "_help": "Set oil_page to true when you start selling bottled oil; the page then appears in the menu and in Google.",
     "oil_page": false
-  }
+  },
+  "_help_gallery": "Photos in the gallery on the mill page, in order. 'img' is the name used in tools/make_images.py.",
+  "gallery": [
+    {
+      "img": "line-01",
+      "el": "Η γραμμή επεξεργασίας",
+      "en": "The processing line"
+    },
+    {
+      "img": "line-06",
+      "el": "Φυγοκεντρικός διαχωριστής (ντεκάντερ) Pieralisi",
+      "en": "Pieralisi centrifugal decanter"
+    },
+    {
+      "img": "line-03",
+      "el": "Αποφύλλωση και πλύσιμο του καρπού",
+      "en": "Leaf removal and washing"
+    },
+    {
+      "img": "line-08",
+      "el": "Φρέσκο λάδι από τη γραμμή",
+      "en": "Fresh oil from the line"
+    },
+    {
+      "img": "line-05",
+      "el": "Κάθετος διαχωριστής για τον τελικό καθαρισμό του λαδιού",
+      "en": "Vertical separator for the final clean-up of the oil"
+    },
+    {
+      "img": "line-02",
+      "el": "Άποψη της γραμμής από άλλη γωνία",
+      "en": "The line from another angle"
+    },
+    {
+      "img": "line-04",
+      "el": "Αντλίες και έξοδος του διαχωριστή",
+      "en": "Pumps and separator outlet"
+    },
+    {
+      "img": "line-07",
+      "el": "Η αίθουσα του ελαιοτριβείου",
+      "en": "The mill hall"
+    }
+  ]
 }
