@@ -61,7 +61,7 @@ T = {  # interface text
         "f_about": "Οικογενειακό ελαιοτριβείο στη Μαλεσίνα Φθιώτιδας, από το 1963.",
         "f_contact": "Επικοινωνία", "f_hours": "Ωράριο σεζόν", "f_pages": "Σελίδες",
         "phone": "Τηλέφωνο", "email": "Email", "address": "Διεύθυνση", "maps": "Οδηγίες στο Google Maps",
-        "privacy": "Πολιτική απορρήτου", "vat": "ΑΦΜ", "gemi": "ΓΕΜΗ", "offseason": "Εκτός σεζόν",
+        "privacy": "Πολιτική απορρήτου", "prices": "Τιμές ελαιολάδου (Oleista)", "vat": "ΑΦΜ", "gemi": "ΓΕΜΗ", "offseason": "Εκτός σεζόν",
         "season_open": "σε λειτουργία", "season_closed": "εκτός λειτουργίας",
     },
     "en": {
@@ -71,7 +71,7 @@ T = {  # interface text
         "f_about": "Family-run olive mill in Malesina, Fthiotida, Greece, since 1963.",
         "f_contact": "Contact", "f_hours": "Season hours", "f_pages": "Pages",
         "phone": "Phone", "email": "Email", "address": "Address", "maps": "Directions on Google Maps",
-        "privacy": "Privacy policy", "vat": "VAT no.", "gemi": "GEMI", "offseason": "Off-season",
+        "privacy": "Privacy policy", "prices": "Olive oil prices (Oleista)", "vat": "VAT no.", "gemi": "GEMI", "offseason": "Off-season",
         "season_open": "open", "season_closed": "closed",
     },
 }
@@ -464,6 +464,7 @@ def layout(key, lang, meta, body, root, is404=False):
     footer_nav = "".join(
         f'<li><a href="{rel(root, page_path(k, lang))}">{NAV[lang][k]}</a></li>'
         for k, (_, _, show) in PAGES.items() if feature_on(show))
+    footer_nav += f'<li><a href="https://oleista.com/en/prices" rel="noopener" target="_blank">{t["prices"]}</a></li>'
     footer_nav += f'<li><a href="{rel(root, page_path("privacy", lang))}">{t["privacy"]}</a></li>'
 
     preload = "".join(
