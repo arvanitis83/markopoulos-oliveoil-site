@@ -15,8 +15,7 @@ editing.
 ## Confirm these claims (taken from the old site)
 
 - [ ] Lab analysis for **every** batch, showing acidity **and** polyphenols. Included in the price? Which lab? (Services page, FAQ, home)
-- [ ] **Storage** for growers in closed stainless tanks under nitrogen. Offered? For how long and at what cost? (Services, FAQ)
-- [ ] **Harvesting service** ("we can take care of the harvest"). Offered? In which area? (Services, home)
+- [ ] **Storage** for growers in closed stainless tanks. Offered? For how long and at what cost? (Services, FAQ)
 - [ ] Processing line is **Pieralisi** with a decanter. Model? (The mill page)
 - [ ] "Every olive variety of the area" (FAQ)
 - [ ] Open **every day** 07:00 – 20:00, October to January. What about February to September? (`site.json` > `hours.offseason`)
