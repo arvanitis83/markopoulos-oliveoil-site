@@ -12,11 +12,14 @@ editing.
 - [ ] **Street address**, if there is one, and the exact map coordinates. (`site.json` > `address.street`, `geo`)
 - [ ] **Privacy policy**: read `src/pages/el/aporrito.html` once; the 12-month retention period is a sensible default, change it if you prefer.
 
-## Confirm these claims (taken from the old site)
+## Claims from the old site
 
-- [ ] Lab analysis for **every** batch, showing acidity **and** polyphenols. Included in the price? Which lab? (Services page, FAQ, home)
-- [ ] **Storage** for growers in closed stainless tanks. Offered? For how long and at what cost? (Services, FAQ)
-- [ ] Processing line is **Pieralisi** with a decanter. Model? (The mill page)
+Removed on 21 Nov 2026 as overstated: harvesting service, nitrogen blanketing.
+
+
+- [x] Lab analysis for every batch, acidity and polyphenols: confirmed (21 Nov 2026). Still useful: included in the price? Which lab?
+- [x] Storage for growers in closed stainless tanks: confirmed (21 Nov 2026). Still useful: duration and cost.
+- [x] Processing line is Pieralisi: confirmed (21 Nov 2026).
 - [ ] "Every olive variety of the area" (FAQ)
 - [ ] Open **every day** 07:00 – 20:00, October to January. What about February to September? (`site.json` > `hours.offseason`)
 - [ ] Is `photos-originals/today-line.jpg` an unedited photo of your current line? If it was AI-enhanced, replace it.
