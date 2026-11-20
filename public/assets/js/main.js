@@ -131,7 +131,7 @@
     if (m) show(m[1]);
     form.addEventListener("submit", function (e) {
       var preview = location.protocol === "file:" || location.hostname === "localhost" ||
-        location.hostname === "127.0.0.1" || window.self !== window.top;
+        location.hostname === "127.0.0.1" || /\.github\.io$/.test(location.hostname) || window.self !== window.top;
       if (preview) {
         e.preventDefault(); show("local"); return;
       }
