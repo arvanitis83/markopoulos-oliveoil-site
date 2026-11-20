@@ -147,6 +147,25 @@ def picture(root, spec):
             f'width="{w}" height="{h}" alt="{esc(alt)}" {load}></picture>')
 
 
+def background(root, spec):
+    """{{bg:name|css object-position}}: full-bleed decorative photo behind a section."""
+    parts = spec.split("|")
+    name = parts[0].strip()
+    pos = parts[1].strip() if len(parts) > 1 else "center"
+    load = 'loading="lazy" decoding="async"' if len(parts) > 2 and parts[2].strip() == "lazy" else 'fetchpriority="high"'
+    sizes = [w for w in (800, 1400, 1800) if (IMG_DIR / f"{name}-{w}.jpg").exists()]
+    if not sizes:
+        raise SystemExit(f"Background image not found: {name} (run tools/make_images.py)")
+    base = f"{root}assets/img/{name}"
+    dims = {w: jpeg_size(IMG_DIR / f"{name}-{w}.jpg")[0] for w in sizes}
+    webp = ", ".join(f"{base}-{w}.webp {dims[w]}w" for w in sizes)
+    jpg = ", ".join(f"{base}-{w}.jpg {dims[w]}w" for w in sizes)
+    return (f'<div class="bg" aria-hidden="true"><picture>'
+            f'<source type="image/webp" srcset="{webp}" sizes="100vw">'
+            f'<img src="{base}-{sizes[-1]}.jpg" srcset="{jpg}" sizes="100vw" alt="" '
+            f'style="object-position:{esc(pos)}" {load}></picture></div>')
+
+
 def maps_url():
     return "https://www.google.com/maps/search/?api=1&query=" + quote(S["maps_query"])
 
@@ -278,13 +297,15 @@ def fill(text, lang, root):
         "season_state": T[lang]["season_open" if S["season"].get("open") else "season_closed"].capitalize(),
         "season_cta": SEASON_CTA[lang][bool(S["season"].get("open"))],
         "icon_phone": ICON["phone"],
+        "leaves": LEAVES,
         "maps_embed": "https://maps.google.com/maps?q=" + quote(S["maps_query"]) + "&t=m&z=14&ie=UTF8&output=embed",
         "email_block": (f'<section><h2>Email</h2><p><a href="mailto:{esc(S["email"])}">{esc(S["email"])}</a></p></section>'
                         if S.get("email") else ""),
     }
-    raw = {"root", "maps_url", "maps_embed", "tel", "contact_list", "hours_list", "messaging_buttons",
+    raw = {"leaves", "root", "maps_url", "maps_embed", "tel", "contact_list", "hours_list", "messaging_buttons",
            "icon_phone", "email_block"}
     text = re.sub(r"\{\{img:([^}]+)\}\}", lambda m: picture(root, m.group(1)), text)
+    text = re.sub(r"\{\{bg:([^}]+)\}\}", lambda m: background(root, m.group(1)), text)
     text = re.sub(r"\{\{href:([\w-]+)\}\}", lambda m: rel(root, page_path(m.group(1), lang)), text)
     text = re.sub(r"\{\{href-(el|en):([\w-]+)\}\}", lambda m: rel(root, page_path(m.group(2), m.group(1))), text)
 
@@ -294,6 +315,9 @@ def fill(text, lang, root):
             raise SystemExit(f"Unknown placeholder {{{{{k}}}}}")
         return simple[k] if k in raw else esc(simple[k])
     return re.sub(r"\{\{([\w-]+)\}\}", var, text)
+
+
+LEAVES = '<div class="leaves" aria-hidden="true"><span class="leaf" style="--x:8%;--d:0s;--t:19s;--s:1"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:22%;--d:6s;--t:23s;--s:0.7"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:37%;--d:3s;--t:17s;--s:0.9"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:55%;--d:9s;--t:21s;--s:0.6"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:68%;--d:1.5s;--t:25s;--s:1.1"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:83%;--d:5s;--t:18s;--s:0.8"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:93%;--d:11s;--t:22s;--s:0.7"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span></div>'
 
 
 SEASON_CTA = {

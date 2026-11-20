@@ -34,6 +34,58 @@
     io.observe(line);
   }
 
+  var motion = !calm;
+  if (motion) document.documentElement.classList.add("motion");
+
+  /* Sections fade up as they scroll into view */
+  if (motion && "IntersectionObserver" in window) {
+    var sel = ".section-head, .offer > li, .cols-3 > div, .steps > li, .service-list > li, .faq details, " +
+      ".print, .spec > li, .heritage > div:first-child, .prose, .contact-facts > section, .form, " +
+      ".call-band .wrap > *, .band-quote, .archive > figure";
+    var els = [].slice.call(document.querySelectorAll(sel)).filter(function (el) {
+      return !el.closest(".hero") && !el.closest(".page-head");
+    });
+    var ro = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("is-in"); ro.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    els.forEach(function (el) {
+      var sibs = [].filter.call(el.parentNode.children, function (c) { return els.indexOf(c) > -1; });
+      el.style.setProperty("--i", Math.min(sibs.indexOf(el), 6));
+      el.classList.add("will-reveal");
+      ro.observe(el);
+    });
+  }
+
+  /* Background photos drift slower than the page (parallax) */
+  var bgs = [].slice.call(document.querySelectorAll(".bg"));
+  if (motion && bgs.length) {
+    var ticking = false;
+    var update = function () {
+      var vh = window.innerHeight;
+      bgs.forEach(function (b) {
+        var r = b.parentElement.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) return;
+        var p = (r.top + r.height / 2 - vh / 2) / vh;
+        b.style.setProperty("--py", (p * -70).toFixed(1) + "px");
+      });
+      ticking = false;
+    };
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+
+  /* Header gets a soft shadow once the page scrolls */
+  var header = document.querySelector(".site-header");
+  if (header) {
+    var onScroll = function () { header.classList.toggle("is-scrolled", window.scrollY > 8); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
   /* Google map loads only after a click (no Google requests before that) */
   var mapBtn = document.querySelector("[data-map-src]");
   if (mapBtn) {

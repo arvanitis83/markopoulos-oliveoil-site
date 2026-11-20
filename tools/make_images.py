@@ -26,7 +26,7 @@ PHOTOS = {
     "archive-mill-people": "archive-mill-people.jpg",
     "today-line": "today-line.jpg",
 }
-WIDTHS = (800, 1400)
+WIDTHS = (800, 1400, 1800)
 
 
 def save_pair(im: Image.Image, base: Path):
