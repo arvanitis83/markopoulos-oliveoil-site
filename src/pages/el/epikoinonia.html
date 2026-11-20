@@ -1,0 +1,76 @@
+---
+title: Επικοινωνία και κράτηση σειράς | Ελαιοτριβείο Μαρκόπουλος, Μαλεσίνα
+description: Τηλέφωνο 22330 51298. Ωράριο σεζόν Οκτώβριος – Ιανουάριος, καθημερινά 07:00 – 20:00. Μαλεσίνα 350 01, Φθιώτιδα. Οδηγίες και φόρμα επικοινωνίας.
+---
+<header class="page-head">
+  <div class="wrap">
+    <h1>Επικοινωνία και κράτηση σειράς</h1>
+    <p class="lead">Για σειρά στην άλεση, το τηλέφωνο είναι ο πιο γρήγορος τρόπος. Για οτιδήποτε άλλο, στείλτε μας μήνυμα.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap contact-grid">
+    <div class="contact-facts">
+      <section>
+        <h2>Τηλέφωνο</h2>
+        <a class="big-phone" href="{{tel}}">{{phone_display}}</a>
+        {{messaging_buttons}}
+      </section>
+      <section>
+        <h2>Ωράριο</h2>
+        {{hours_list}}
+      </section>
+      {{email_block}}
+      <section>
+        <h2>Διεύθυνση</h2>
+        <p>{{address}}<br><a href="{{maps_url}}" rel="noopener" target="_blank">Οδηγίες στο Google Maps</a></p>
+        <div class="map-box">
+          <div>
+            <button class="btn btn-ghost" type="button" data-map-src="{{maps_embed}}" data-map-title="Χάρτης: Ελαιοτριβείο Μαρκόπουλος, Μαλεσίνα">Εμφάνιση χάρτη</button>
+            <p>Ο χάρτης φορτώνει από την Google μόνο αν πατήσετε το κουμπί.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <form class="form" id="form" action="{{root}}contact.php" method="post" accept-charset="UTF-8" novalidate>
+      <h2>Στείλτε μας μήνυμα</h2>
+      <p>Αφήστε ένα τηλέφωνο ή ένα email για να σας απαντήσουμε.</p>
+      <input type="hidden" name="lang" value="el">
+      <input type="hidden" name="t" value="">
+      <div class="hp" aria-hidden="true">
+        <label for="website">Αφήστε αυτό το πεδίο κενό</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-name">Ονοματεπώνυμο</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" maxlength="120" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-phone">Τηλέφωνο</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40">
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" maxlength="160">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-qty">Ποσότητα καρπού <span class="hint">(προαιρετικό, π.χ. 800 κιλά)</span></label>
+        <input id="f-qty" name="quantity" type="text" maxlength="80">
+      </div>
+      <div class="field">
+        <label for="f-msg">Μήνυμα</label>
+        <textarea id="f-msg" name="message" maxlength="5000" required></textarea>
+      </div>
+      <label class="consent">
+        <input type="checkbox" name="consent" value="1" required>
+        <span>Συμφωνώ να χρησιμοποιηθούν τα στοιχεία μου μόνο για να λάβω απάντηση, όπως περιγράφει η <a href="{{href:privacy}}">πολιτική απορρήτου</a>.</span>
+      </label>
+      <p class="form-msg" role="alert" hidden></p>
+      <button class="btn btn-leaf" type="submit">Αποστολή μηνύματος</button>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,60 @@
+# Builds the site and uploads public/ to the web host over FTP.
+#
+# It does nothing until you add these in GitHub: repository > Settings > Secrets and variables > Actions
+#   Secrets:    FTP_SERVER     e.g. ftp.markopoulos-oliveoil.gr  (hPanel > Files > FTP Accounts)
+#               FTP_USERNAME   e.g. u123456789.markopoulos-oliveoil.gr
+#               FTP_PASSWORD
+#   Variables (optional):
+#               FTP_SERVER_DIR  folder on the server, default "public_html/"
+#                               (use "./" if your FTP account opens directly inside public_html)
+#               FTP_PROTOCOL    "ftps" (default) or "ftp" if the host does not offer FTPS
+#
+# Runs on every push to main that changes the site, or manually from the Actions tab.
+
+name: Deploy website
+
+on:
+  push:
+    branches: [main]
+    paths: ["site.json", "build.py", "src/**", "public/**", ".github/workflows/deploy.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build site
+        run: python build.py
+
+      - name: Check FTP settings
+        id: cfg
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          if [ -z "$FTP_SERVER" ]; then
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::FTP secrets are not set, so nothing was uploaded. See README.md, section 'Automatic upload'."
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload to web host
+        if: steps.cfg.outputs.enabled == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ vars.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./public/
+          server-dir: ${{ vars.FTP_SERVER_DIR || 'public_html/' }}

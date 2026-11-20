@@ -1,0 +1,76 @@
+---
+title: Contact and booking | Markopoulos Olive Mill, Malesina, Greece
+description: Phone +30 22330 51298. Season October – January, every day 07:00 – 20:00. Malesina 350 01, Fthiotida, Greece. Directions and contact form.
+---
+<header class="page-head">
+  <div class="wrap">
+    <h1>Contact and booking</h1>
+    <p class="lead">To book a milling slot, calling is the quickest way. For anything else, send us a message.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap contact-grid">
+    <div class="contact-facts">
+      <section>
+        <h2>Phone</h2>
+        <a class="big-phone" href="{{tel}}">{{phone_intl}}</a>
+        {{messaging_buttons}}
+      </section>
+      <section>
+        <h2>Hours</h2>
+        {{hours_list}}
+      </section>
+      {{email_block}}
+      <section>
+        <h2>Address</h2>
+        <p>{{address}}<br><a href="{{maps_url}}" rel="noopener" target="_blank">Directions on Google Maps</a></p>
+        <div class="map-box">
+          <div>
+            <button class="btn btn-ghost" type="button" data-map-src="{{maps_embed}}" data-map-title="Map: Markopoulos Olive Mill, Malesina">Show map</button>
+            <p>The map loads from Google only when you press the button.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <form class="form" id="form" action="{{root}}contact.php" method="post" accept-charset="UTF-8" novalidate>
+      <h2>Send us a message</h2>
+      <p>Leave a phone number or an email address so we can reply.</p>
+      <input type="hidden" name="lang" value="en">
+      <input type="hidden" name="t" value="">
+      <div class="hp" aria-hidden="true">
+        <label for="website">Leave this field empty</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="f-name">Full name</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" maxlength="120" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-phone">Phone</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40">
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" maxlength="160">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-qty">Quantity of olives <span class="hint">(optional, e.g. 800 kg)</span></label>
+        <input id="f-qty" name="quantity" type="text" maxlength="80">
+      </div>
+      <div class="field">
+        <label for="f-msg">Message</label>
+        <textarea id="f-msg" name="message" maxlength="5000" required></textarea>
+      </div>
+      <label class="consent">
+        <input type="checkbox" name="consent" value="1" required>
+        <span>I agree that my details are used only to reply to me, as described in the <a href="{{href:privacy}}">privacy policy</a>.</span>
+      </label>
+      <p class="form-msg" role="alert" hidden></p>
+      <button class="btn btn-leaf" type="submit">Send message</button>
+    </form>
+  </div>
+</section>
