@@ -41,9 +41,9 @@
   if (motion && "IntersectionObserver" in window) {
     var sel = ".section-head, .offer > li, .cols-3 > div, .steps > li, .service-list > li, .faq details, " +
       ".print, .spec > li, .heritage > div:first-child, .prose, .contact-facts > section, .form, " +
-      ".call-band .wrap > *, .band-quote, .archive > figure";
+      ".call-band .wrap > *, .band-quote, .archive > figure, .offer-cards > li, .tips > div, .frame, .big-year";
     var els = [].slice.call(document.querySelectorAll(sel)).filter(function (el) {
-      return !el.closest(".hero") && !el.closest(".page-head");
+      return !el.closest(".hero") && !el.closest(".hero-full") && !el.closest(".page-head");
     });
     var ro = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {

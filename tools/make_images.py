@@ -94,3 +94,30 @@ if __name__ == "__main__":
     photos()
     og_image()
     logo_and_icons()
+
+
+def light_logo():
+    """Cream-text version of the logo for dark backgrounds (header over photos, footer)."""
+    im = Image.open(OUT / "logo.png").convert("RGBA")
+    px = im.load()
+    w, h = im.size
+    for y in range(h):
+        for x in range(w):
+            r, g, b, a = px[x, y]
+            if a == 0:
+                continue
+            lum = 0.299 * r + 0.587 * g + 0.114 * b
+            if y >= int(h * 0.6):
+                if lum < 120:
+                    px[x, y] = (244, 240, 226, a)
+            elif lum < 45:
+                px[x, y] = (200, 205, 170, a)
+            else:
+                px[x, y] = (min(255, int(r * 1.25)), min(255, int(g * 1.25)), min(255, int(b * 1.1)), a)
+    im.save(OUT / "logo-light.png", optimize=True)
+    im.save(OUT / "logo-light.webp", quality=90, method=6)
+    print("  ok logo-light")
+
+
+if __name__ == "__main__":
+    light_logo()

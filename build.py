@@ -298,11 +298,12 @@ def fill(text, lang, root):
         "season_cta": SEASON_CTA[lang][bool(S["season"].get("open"))],
         "icon_phone": ICON["phone"],
         "leaves": LEAVES,
+        "ornament": ORNAMENT,
         "maps_embed": "https://maps.google.com/maps?q=" + quote(S["maps_query"]) + "&t=m&z=14&ie=UTF8&output=embed",
         "email_block": (f'<section><h2>Email</h2><p><a href="mailto:{esc(S["email"])}">{esc(S["email"])}</a></p></section>'
                         if S.get("email") else ""),
     }
-    raw = {"leaves", "root", "maps_url", "maps_embed", "tel", "contact_list", "hours_list", "messaging_buttons",
+    raw = {"ornament", "leaves", "root", "maps_url", "maps_embed", "tel", "contact_list", "hours_list", "messaging_buttons",
            "icon_phone", "email_block"}
     text = re.sub(r"\{\{img:([^}]+)\}\}", lambda m: picture(root, m.group(1)), text)
     text = re.sub(r"\{\{bg:([^}]+)\}\}", lambda m: background(root, m.group(1)), text)
@@ -317,6 +318,7 @@ def fill(text, lang, root):
     return re.sub(r"\{\{([\w-]+)\}\}", var, text)
 
 
+ORNAMENT = '<svg class="ornament" aria-hidden="true" viewBox="0 0 120 40" width="120" height="40" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M4 30 C30 26 60 22 96 12"/><path d="M22 27 C24 18 32 14 40 13 C36 20 30 25 22 27Z"/><path d="M30 26 C38 30 46 31 54 28 C46 24 38 23 30 26Z"/><path d="M50 21 C52 12 60 7 68 7 C64 14 58 19 50 21Z"/><path d="M58 20 C66 25 74 25 82 21 C74 17 66 17 58 20Z"/><path d="M80 14 C84 7 92 4 99 5 C95 11 88 14 80 14Z"/><ellipse cx="104" cy="16" rx="5.5" ry="4" transform="rotate(-25 104 16)" fill="currentColor" fill-opacity=".25"/></svg>'
 LEAVES = '<div class="leaves" aria-hidden="true"><span class="leaf" style="--x:8%;--d:0s;--t:19s;--s:1"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:22%;--d:6s;--t:23s;--s:0.7"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:37%;--d:3s;--t:17s;--s:0.9"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:55%;--d:9s;--t:21s;--s:0.6"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:68%;--d:1.5s;--t:25s;--s:1.1"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:83%;--d:5s;--t:18s;--s:0.8"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span><span class="leaf" style="--x:93%;--d:11s;--t:22s;--s:0.7"><svg viewBox="0 0 48 18" width="48" height="18"><path d="M2 9C12 0 34 -1 46 9C34 19 12 18 2 9Z" fill="currentColor"/><path d="M2 9H44" stroke="rgba(0,0,0,.25)" stroke-width="1"/></svg></span></div>'
 
 
@@ -407,8 +409,10 @@ def layout(key, lang, meta, body, root, is404=False):
                   f'<span class="season-text">{esc(S["season"]["text"][lang])}</span>'
                   f'<a class="season-phone" href="tel:{S["phone"]}">{esc(S["phone_display"] if lang == "el" else S["phone_display_intl"])}</a></div></div>')
 
-    logo = (f'<picture><source type="image/webp" srcset="{root}assets/img/logo.webp">'
-            f'<img src="{root}assets/img/logo.png" width="560" height="292" alt="{esc(t["home_alt"])}"></picture>')
+    logo = (f'<picture class="logo-dark"><source type="image/webp" srcset="{root}assets/img/logo.webp">'
+            f'<img src="{root}assets/img/logo.png" width="560" height="292" alt="{esc(t["home_alt"])}"></picture>'
+            f'<picture class="logo-light" aria-hidden="true"><source type="image/webp" srcset="{root}assets/img/logo-light.webp">'
+            f'<img src="{root}assets/img/logo-light.png" width="560" height="292" alt=""></picture>')
 
     footer_nav = "".join(
         f'<li><a href="{rel(root, page_path(k, lang))}">{NAV[lang][k]}</a></li>'
@@ -423,6 +427,8 @@ def layout(key, lang, meta, body, root, is404=False):
     og_locale = "el_GR" if lang == "el" else "en_GB"
     phone_label = esc(S["phone_display"] if lang == "el" else S["phone_display_intl"])
     page_class = meta.get("body_class", f"page-{key or '404'}")
+    if "hero-stage" in body or "has-bg" in body:
+        page_class += " overlay"
     return f"""<!doctype html>
 <html lang="{lang}">
 <head>
@@ -474,7 +480,7 @@ def layout(key, lang, meta, body, root, is404=False):
 <footer class="site-footer">
   <div class="wrap footer-grid">
     <div class="f-brand">
-      <a class="brand" href="{rel(root, page_path('home', lang))}"><img src="{root}assets/img/logo.png" width="560" height="292" alt="{esc(S['name'][lang])}" loading="lazy"></a>
+      <a class="brand" href="{rel(root, page_path('home', lang))}"><img src="{root}assets/img/logo-light.png" width="560" height="292" alt="{esc(S['name'][lang])}" loading="lazy"></a>
       <p>{t['f_about']}</p>
       {social_links()}
     </div>
