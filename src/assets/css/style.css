@@ -814,3 +814,16 @@ html:not(.js) .g-btn, html:not(.js) .g-tools, html:not(.js) .g-thumbs, html:not(
 .brand img { width: 11rem; }
 .f-brand img { width: 12.5rem; }
 @media (max-width: 36rem) { .brand img { width: 9rem; } }
+
+/* prices link: quiet, editorial, no pill */
+.prices-link {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font: 400 clamp(1.3rem, 1.1rem + .6vw, 1.6rem)/1.2 var(--serif); color: var(--leaf);
+  text-decoration: none; padding: .35rem 0 .5rem;
+  background: linear-gradient(var(--gold), var(--gold)) 0 100% / 100% 1px no-repeat;
+  transition: background-size .45s cubic-bezier(.2, .7, .2, 1), color .3s ease;
+}
+.prices-link svg { color: var(--gold); transition: transform .35s cubic-bezier(.2, .7, .2, 1); }
+.prices-link:hover { color: var(--ink); background-size: 100% 2px; }
+.prices-link:hover svg { transform: translate(3px, -3px); }
+.prices-cta { gap: .7rem; }
