@@ -74,9 +74,7 @@ def logo_and_icons():
     im = im.crop(bbox)
     w = 560
     lg = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
-    lg.save(OUT / "logo.png", "PNG", optimize=True)
-    lg.save(OUT / "logo.webp", "WEBP", quality=90, method=6)
-    print(f"  ok logo ({lg.width}x{lg.height})")
+    # the website logo itself is made by tools/make_logo.py
 
     # Icon: the olive and nearby leaves, cropped from the logo, on a light tile.
     W, H = im.size
@@ -123,5 +121,3 @@ def light_logo():
     print("  ok logo-light")
 
 
-if __name__ == "__main__":
-    light_logo()

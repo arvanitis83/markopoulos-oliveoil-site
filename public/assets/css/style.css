@@ -809,3 +809,8 @@ html:not(.js) .g-btn, html:not(.js) .g-tools, html:not(.js) .g-thumbs, html:not(
   .prices-icon path:nth-child(2), .prices-icon path:nth-child(3) { stroke-dasharray: 60; stroke-dashoffset: 60; }
   .motion .prices-band .prices-icon path:nth-child(2), .motion .prices-band .prices-icon path:nth-child(3) { animation: draw 1.8s ease forwards .3s; }
 }
+
+/* logo lockup: a little larger so "Olive Oil" stays readable */
+.brand img { width: 11rem; }
+.f-brand img { width: 12.5rem; }
+@media (max-width: 36rem) { .brand img { width: 9rem; } }

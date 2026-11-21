@@ -13,6 +13,7 @@ src/assets/          CSS, JavaScript, fonts, web-size images
 src/static-templates contact.php (form handler) and .htaccess (redirects, https)
 photos-originals/    Full-size originals of the photos
 tools/make_images.py Makes web sizes of new photos (needs: pip install pillow)
+tools/make_logo.py   Rebuilds the logo (olive branch + Didot wordmark), dark and light
 TODO-CONTENT.md      Facts only the family can fill in or confirm
 .github/workflows/   Optional automatic upload to the host after every change
 ```
