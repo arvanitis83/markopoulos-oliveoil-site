@@ -391,7 +391,7 @@ def json_ld(lang):
         "url": url("home", lang),
         "telephone": S["phone"],
         "image": S["domain"] + "/assets/img/og-image.jpg",
-        "logo": S["domain"] + "/assets/img/logo.png",
+        "logo": S["domain"] + "/assets/img/logo.png?v={ASSET_V}",
         "foundingDate": str(S["founded"]),
         "address": {k: v for k, v in {
             "@type": "PostalAddress",
@@ -459,10 +459,10 @@ def layout(key, lang, meta, body, root, is404=False):
                   f'<span class="season-text">{esc(S["season"]["text"][lang])}</span>'
                   f'<a class="season-phone" href="tel:{S["phone"]}">{esc(S["phone_display"] if lang == "el" else S["phone_display_intl"])}</a></div></div>')
 
-    logo = (f'<picture class="logo-dark"><source type="image/webp" srcset="{root}assets/img/logo.webp">'
-            f'<img src="{root}assets/img/logo.png" width="560" height="292" alt="{esc(t["home_alt"])}"></picture>'
-            f'<picture class="logo-light" aria-hidden="true"><source type="image/webp" srcset="{root}assets/img/logo-light.webp">'
-            f'<img src="{root}assets/img/logo-light.png" width="560" height="292" alt=""></picture>')
+    logo = (f'<picture class="logo-dark"><source type="image/webp" srcset="{root}assets/img/logo.webp?v={ASSET_V}">'
+            f'<img src="{root}assets/img/logo.png?v={ASSET_V}" width="560" height="292" alt="{esc(t["home_alt"])}"></picture>'
+            f'<picture class="logo-light" aria-hidden="true"><source type="image/webp" srcset="{root}assets/img/logo-light.webp?v={ASSET_V}">'
+            f'<img src="{root}assets/img/logo-light.png?v={ASSET_V}" width="560" height="292" alt=""></picture>')
 
     footer_nav = "".join(
         f'<li><a href="{rel(root, page_path(k, lang))}">{NAV[lang][k]}</a></li>'
@@ -531,7 +531,7 @@ def layout(key, lang, meta, body, root, is404=False):
 <footer class="site-footer">
   <div class="wrap footer-grid">
     <div class="f-brand">
-      <a class="brand" href="{rel(root, page_path('home', lang))}"><img src="{root}assets/img/logo-light.png" width="560" height="292" alt="{esc(S['name'][lang])}" loading="lazy"></a>
+      <a class="brand" href="{rel(root, page_path('home', lang))}"><img src="{root}assets/img/logo-light.png?v={ASSET_V}" width="560" height="292" alt="{esc(S['name'][lang])}" loading="lazy"></a>
       <p>{t['f_about']}</p>
       {social_links()}
     </div>
@@ -643,7 +643,7 @@ def build():
         (shutil.copytree if p.is_dir() else shutil.copy2)(p, OUT / p.name)
     h = hashlib.sha1()
     for p in sorted((SRC / "assets").rglob("*.*")):
-        if p.suffix in (".css", ".js"):
+        if p.suffix in (".css", ".js") or p.name.startswith("logo"):
             h.update(p.read_bytes())
     ASSET_V = h.hexdigest()[:8]
 
