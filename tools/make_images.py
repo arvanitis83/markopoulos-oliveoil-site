@@ -25,6 +25,7 @@ PHOTOS = {
     "archive-building": "archive-building.jpg",
     "archive-mill-people": "archive-mill-people.jpg",
     "today-line": "today-line.jpg",
+    "hero-grove": "hero-grove.jpg",       # olive grove at sunset, from the old site's homepage
     # gallery of today's line (site.json > gallery)
     "line-01": "line-01.jpg", "line-02": "line-02.jpg", "line-03": "line-03.jpg", "line-04": "line-04.jpg",
     "line-05": "line-05.jpg", "line-06": "line-06.jpg", "line-07": "line-07.jpg", "line-08": "line-08.jpg",

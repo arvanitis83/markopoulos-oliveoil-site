@@ -534,6 +534,7 @@ strong { font-weight: 600; }
 }
 @media (max-width: 60rem) {
   .hero-stage::before { background: linear-gradient(180deg, rgb(24 32 17 / .88) 0%, rgb(24 32 17 / .8) 60%, rgb(24 32 17 / .7) 100%); }
+  .hero-full::before { background: linear-gradient(180deg, rgb(20 26 14 / .7) 0%, rgb(20 26 14 / .5) 35%, rgb(20 26 14 / .6) 70%, rgb(20 26 14 / .85) 100%); }
 }
 
 /* =====================================================================
@@ -591,8 +592,9 @@ h2 { font-size: clamp(2.2rem, 1.5rem + 2.4vw, 3.3rem); }
 .hero-full { min-height: max(40rem, calc(100svh - 2.6rem)); display: flex; flex-direction: column; }
 .hero-full::before {
   background:
-    radial-gradient(ellipse at 50% 45%, rgb(24 32 17 / .55) 0%, rgb(24 32 17 / .82) 65%, rgb(24 32 17 / .94) 100%),
-    linear-gradient(180deg, rgb(24 32 17 / .7) 0%, transparent 25%);
+    radial-gradient(ellipse at 50% 48%, rgb(20 26 14 / .42) 0%, rgb(20 26 14 / .55) 55%, rgb(20 26 14 / .8) 100%),
+    linear-gradient(180deg, rgb(20 26 14 / .65) 0%, transparent 22%),
+    linear-gradient(0deg, rgb(20 26 14 / .75) 0%, transparent 30%);
 }
 .hero-center { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 7rem; padding-bottom: 4rem; }
 .hero-full .hero-text { max-width: 58rem; }
