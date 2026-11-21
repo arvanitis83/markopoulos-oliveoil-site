@@ -19,6 +19,7 @@ Where things live:
 import datetime as dt
 import hashlib
 import html
+import os
 import json
 import re
 import shutil
@@ -430,6 +431,8 @@ def layout(key, lang, meta, body, root, is404=False):
     desc = meta.get("description", "")
     hidden = key == "oil" and not feature_on("oil_page")
     robots = meta.get("robots", "noindex" if hidden else "")
+    if os.environ.get("DEMO_NOINDEX"):  # public demo copies (e.g. GitHub Pages) stay out of Google
+        robots = "noindex"
     canonical = url(key, lang) if key else ""
 
     alt_links = ""
@@ -576,6 +579,8 @@ def sitemap():
 
 
 def robots():
+    if os.environ.get("DEMO_NOINDEX"):
+        return "User-agent: *\nDisallow: /\n"
     return f"User-agent: *\nDisallow: /contact.php\n\nSitemap: {S['domain']}/sitemap.xml\n"
 
 

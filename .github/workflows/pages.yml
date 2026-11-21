@@ -27,8 +27,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Build site
-        run: python build.py
+      - name: Build site (demo copy, kept out of Google)
+        run: DEMO_NOINDEX=1 python build.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
